@@ -1,0 +1,11 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Demos/Marker/AR Marker Simple Button/ARMarker Simple Button.unity
+    guid: 248dda6d9653f4ec5bb7484b9e0875af
+  m_configObjects: {}
