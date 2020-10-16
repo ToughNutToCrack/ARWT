@@ -9,6 +9,8 @@
 <a href="https://twitter.com/tntcproject" target="_blank"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/tntcproject?label=Follow"></a>
 </p>
 
+[![ARWT Website](.github/thumbnail.png)](https://toughnuttocrack.it/arwt)
+
 <p>
 One of the most requested things is to create AR experiences for the Web to avoid forcing the end-user to download a dedicated application. We all know how boring it can be downloading an application that we will use for a limited time. Therefore, you often risk losing a potential customer or limiting the spread of your AR experience.
 
@@ -18,8 +20,5 @@ This library allows you to use Unity to build AR Web applications, working as a 
 
 Our goal is to distribute the code for free and create a good community that supports and evolves the library to grow and stay up to date. At the moment, this project is carried out in our free time, and therefore has relatively slow growth. For this reason, we would like to gather all possible support to allow us to speed up the development of this library. More support will allow us to dedicate more time to implement this project, which will remain free and open source for anyone in any case.
 </p>
-
-
-[![ARWT Website](.github/thumbnail.png)](https://toughnuttocrack.it/arwt)
 
 <p align="center"><a href="https://toughnuttocrack.it/arwt" target="_blank">Check this link for the Documentation</a></p>
