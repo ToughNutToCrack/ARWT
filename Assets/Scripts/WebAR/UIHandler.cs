@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ARWT.WebXR{
+namespace ARWT.Marker{
     public class UIHandler : MonoBehaviour{
         public GameObject parent;
         public GameObject UI;

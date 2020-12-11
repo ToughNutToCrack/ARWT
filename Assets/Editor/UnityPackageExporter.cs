@@ -16,7 +16,8 @@ namespace ARWT.Core
         "Assets/WebGLTemplates",
         "Assets/Resources/Prefabs",
         "Assets/Plugins",
-        "Assets/Scripts"
+        "Assets/Scripts",
+        "Assets/Shaders",
         };
 
         [MenuItem("ARWT/Export Unity Package")]
