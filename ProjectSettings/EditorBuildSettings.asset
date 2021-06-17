@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Demos/Marker/AR Marker Simple Button/ARMarker Simple Button.unity
-    guid: 248dda6d9653f4ec5bb7484b9e0875af
+    path: Assets/App/Internal/App.unity
+    guid: 8961e5915d71ef04b8e1fe8e6c35e5c1
   m_configObjects: {}
