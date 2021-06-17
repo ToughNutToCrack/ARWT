@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace ARWT.Core{
+namespace ARWT.Marker{
     public static class PrefabsHandler{
         public const string PREFABS = "Prefabs/";
         public const string MAINCAMERA = "Main Camera";
