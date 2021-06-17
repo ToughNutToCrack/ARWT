@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Demos/Marker/AR Marker Simple Button/ARMarker Simple Button.unity
     guid: 248dda6d9653f4ec5bb7484b9e0875af
-  - enabled: 1
+  - enabled: 0
     path: Assets/Demos/Marker/AR Marker Rotate and Scale/ARMarker Rotate and Scale.unity
     guid: 065497cde0b9c46d99aaf798c5d58e69
+  - enabled: 1
+    path: Assets/Scenes/WebXR.unity
+    guid: 36432bfdb3009472289632c1c710650e
   m_configObjects: {}
