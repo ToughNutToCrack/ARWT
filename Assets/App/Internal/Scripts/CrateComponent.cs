@@ -43,7 +43,7 @@ public class CrateComponent : MonoBehaviour
                     child.gameObject.tag = "Shard";
                     child.gameObject.AddComponent<ConstantForce>();
                     var cf = child.GetComponent<ConstantForce>();
-                    cf.force = new Vector3(0, 0, -20f);
+                    cf.force = new Vector3(0, 0, 10f);
 
                     shards[i] = child.gameObject;
                 }

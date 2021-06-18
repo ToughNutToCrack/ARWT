@@ -2,8 +2,8 @@
 
 public class PlayerController : MonoBehaviour
 {
-    const float DEFAULT_ROTATION_SPEED = 60f;
-    const float DEFAULT_MOVEMENT_SPEED = 60f;
+    const float DEFAULT_ROTATION_SPEED = 65f;
+    const float DEFAULT_MOVEMENT_SPEED = 65f;
 
     [SerializeField]
     BumperComponent FrontBumper;

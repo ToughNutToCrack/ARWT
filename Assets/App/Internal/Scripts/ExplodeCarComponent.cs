@@ -19,6 +19,23 @@ public class ExplodeCarComponent : MonoBehaviour
 
     float _explosionDuration;
 
+    bool _exploded = false;
+
+    void Awake()
+    {
+        if(_exploded)
+        {
+            if(_smoke != null && !_smoke.isPlaying)
+            {
+                _smoke.Play();
+            }
+            if (_fire != null && !_fire.isPlaying)
+            {
+                _fire.Play();
+            }
+        }
+    }
+
     private void Update()
     {
         if(_explosionDuration > 0)
@@ -37,29 +54,34 @@ public class ExplodeCarComponent : MonoBehaviour
 
     public void ExplodeCar()
     {
-        if(_fire != null)
+        if (!_exploded)
         {
-            _fire.gameObject.SetActive(true);
-            _fire.Play();
-        }
-        if(_smoke != null)
-        {
-            _smoke.gameObject.SetActive(true);
-            _smoke.Play();
-        }
-        if(_explosion != null)
-        {
-            _explosion.gameObject.SetActive(true);
-            _explosion.Play();
-            _explosionDuration = _explosion.main.duration - 0.01f;
-        }
-        if(_meshRenderer != null)
-        {
-            _meshRenderer.enabled = false;
-        }
-        if(_carDestroyed != null)
-        {
-            _carDestroyed.SetActive(true);
+            if (_fire != null)
+            {
+                _fire.gameObject.SetActive(true);
+                _fire.Play();
+            }
+            if (_smoke != null)
+            {
+                _smoke.gameObject.SetActive(true);
+                _smoke.Play();
+            }
+            if (_explosion != null)
+            {
+                _explosion.gameObject.SetActive(true);
+                _explosion.Play();
+                _explosionDuration = _explosion.main.duration - 0.01f;
+            }
+            if (_meshRenderer != null)
+            {
+                _meshRenderer.enabled = false;
+            }
+            if (_carDestroyed != null)
+            {
+                _carDestroyed.SetActive(true);
+            }
+
+            _exploded = true;
         }
     }
 }
