@@ -1,2 +1,18 @@
+/*.data.br
+Content-Encoding = br
+Content-Type = application/octet-stream
+
 /*.wasm
 Content-Type: application/wasm
+
+/*.wasm.br
+Content-Encoding = br
+Content-Type = application/wasm
+
+/*.js
+Content-Encoding = js
+Content-Type = application/javascript
+
+/*.js.br
+Content-Encoding = br
+Content-Type = application/javascript
