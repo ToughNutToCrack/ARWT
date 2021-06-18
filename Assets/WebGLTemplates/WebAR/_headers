@@ -9,8 +9,10 @@ Content-Encoding: br
 /*.wasm
 Content-Type: application/wasm
 /*.wasm.gz
+Content-Encoding: gzip
 Content-Type: application/wasm
 /*.wasm.br
+Content-Encoding: br
 Content-Type: application/wasm
 
 /*.js
