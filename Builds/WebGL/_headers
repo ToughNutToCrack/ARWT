@@ -1,5 +1,5 @@
 /*.unityweb
-Content-Encoding: br
+Content-Encoding: gzip
 
 /*.gz
 Content-Encoding: gzip
@@ -18,6 +18,8 @@ Content-Type: application/wasm
 /*.js
 Content-Type: application/javascript
 /*.js.gz
+Content-Encoding: gzip
 Content-Type: application/javascript
 /*.js.br
+Content-Encoding: br
 Content-Type: application/javascript
