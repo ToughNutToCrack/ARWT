@@ -1,0 +1,7 @@
+/*.unityweb
+Content-Encoding: br
+Content-Type: application/octet-stream
+
+/*.wasm
+Content-Encoding: br
+Content-Type: application/wasm
