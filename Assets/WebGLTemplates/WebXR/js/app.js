@@ -2,11 +2,16 @@ const unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BU
 
 let isCameraReady = false;
 let isCopyTransformARReady = false;
+let isTouchListenerReady = false;
 let gl = null;
 let unityCanvas = null;
 let frameDrawer = null;
 let xrSession = null;
 let xrRefSpace = null;
+let xrViewerSpace = null
+let xrHitTestSource = null
+let isValidHitTest = false
+let hitTestPosition = null
 
 function cameraReady(){
     isCameraReady = true;
@@ -14,6 +19,10 @@ function cameraReady(){
 
 function dcopyARTransformReady(){
     isCopyTransformARReady = true;
+}
+
+function touchListenerReady(){
+    isTouchListenerReady = true
 }
 
 function quaternionToUnity(q) {
@@ -53,7 +62,7 @@ function setupObject(){
 function onButtonClicked(){
     if(!xrSession){
         navigator.xr.requestSession('immersive-ar', {
-            requiredFeatures: ['local-floor'] 
+            requiredFeatures: ['local-floor', 'hit-test'] 
         }).then(onSessionStarted, onRequestSessionError);
     }else{
         xrSession.end();
@@ -64,12 +73,20 @@ function onSessionStarted(session) {
     xrSession = session;
 
     session.addEventListener('end', onSessionEnded);
+    session.addEventListener('select', onSelect);
 
     let glLayer = new XRWebGLLayer(session, gl);
     session.updateRenderState({ baseLayer: glLayer });
 
     unityInstance.Module.canvas.width = glLayer.framebufferWidth;
     unityInstance.Module.canvas.height = glLayer.framebufferHeight;
+
+    session.requestReferenceSpace('viewer').then((refSpace) => {
+        xrViewerSpace = refSpace;
+        session.requestHitTestSource({ space: xrViewerSpace }).then((hitTestSource) => {
+            xrHitTestSource = hitTestSource;
+        });
+    });
 
     session.requestReferenceSpace('local').then((refSpace) => {
         xrRefSpace = refSpace;
@@ -90,6 +107,13 @@ function frameInject(raf){
     }
 }
 
+function onSelect(event){
+    if(isValidHitTest){
+        const serializedPos = `${[hitTestPosition.x, hitTestPosition.y, hitTestPosition.z]}`
+        unityInstance.SendMessage("HitListener", "setHit", serializedPos);
+    }
+}
+
 
 function onXRFrame(frame) {
     let session = frame.session;
@@ -103,6 +127,7 @@ function onXRFrame(frame) {
 
 
     let pose = frame.getViewerPose(xrRefSpace);
+    isValidHitTest = false
 
      if (pose) {
 
@@ -133,6 +158,19 @@ function onXRFrame(frame) {
             unityInstance.SendMessage("CameraMain", "setRotation", serializedRot);
 
             unityInstance.SendMessage("CopyARTransform", "setVisible", "true");
+
+        }
+        
+        if(xrHitTestSource){
+            let hitTestResults = frame.getHitTestResults(xrHitTestSource);
+            if (hitTestResults.length > 0) {
+                let p = hitTestResults[0].getPose(xrRefSpace);
+                let position = p.transform.position;
+                let pos = new THREE.Vector3(position.x, position.y, position.z);
+                pos = vec3ToUnity(pos);
+                isValidHitTest = true
+                hitTestPosition = pos
+            }
         }
         
     }
@@ -144,6 +182,8 @@ function onRequestSessionError(ex) {
 }
 
 function onEndSession(session) {
+    xrHitTestSource.cancel();
+    xrHitTestSource = null;
     session.end();
 }
 
