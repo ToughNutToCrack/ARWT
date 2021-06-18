@@ -83,8 +83,11 @@ function onSessionStarted(session) {
 
     session.requestReferenceSpace('viewer').then((refSpace) => {
         xrViewerSpace = refSpace;
-        session.requestHitTestSource({ space: xrViewerSpace }).then((hitTestSource) => {
-            xrHitTestSource = hitTestSource;
+        // session.requestHitTestSource({ space: xrViewerSpace }).then((hitTestSource) => {
+        //     xrHitTestSource = hitTestSource;
+        // });
+        session.requestHitTestSourceForTransientInput({ profile:'generic-touchscreen'}).then((hitTestSource) => {
+            xrTransientInputHitTestSource = hitTestSource;
         });
     });
 
@@ -160,16 +163,32 @@ function onXRFrame(frame) {
             unityInstance.SendMessage("CopyARTransform", "setVisible", "true");
 
         }
+
+        // if(xrHitTestSource){
+            // let hitTestResults = frame.getHitTestResults(xrHitTestSource);
+            // if (hitTestResults.length > 0) {
+            //     let p = hitTestResults[0].getPose(xrRefSpace);
+            //     let position = p.transform.position;
+            //     let pos = new THREE.Vector3(position.x, position.y, position.z);
+            //     pos = vec3ToUnity(pos);
+            //     isValidHitTest = true
+            //     hitTestPosition = pos
+            // }
+        // }
         
-        if(xrHitTestSource){
-            let hitTestResults = frame.getHitTestResults(xrHitTestSource);
+        if(xrTransientInputHitTestSource){
+          
+            let hitTestResults = frame.getHitTestResultsForTransientInput(xrTransientInputHitTestSource);
             if (hitTestResults.length > 0) {
-                let p = hitTestResults[0].getPose(xrRefSpace);
-                let position = p.transform.position;
-                let pos = new THREE.Vector3(position.x, position.y, position.z);
-                pos = vec3ToUnity(pos);
-                isValidHitTest = true
-                hitTestPosition = pos
+                let p = hitTestResults[0].results[0]
+                if(p != null){
+                    let newPose = p.getPose(xrRefSpace);
+                    let position = newPose.transform.position;
+                    let pos = new THREE.Vector3(position.x, position.y, position.z);
+                    pos = vec3ToUnity(pos);
+                    isValidHitTest = true
+                    hitTestPosition = pos
+                }
             }
         }
         
