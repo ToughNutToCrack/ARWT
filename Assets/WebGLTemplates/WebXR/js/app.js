@@ -40,6 +40,7 @@ function initUnity(){
     gl = unityInstance.Module.ctx;
     unityCanvas = unityInstance.Module.canvas;
     unityCanvas.width = document.documentElement.clientWidth;
+    unityCanvas.height = document.documentElement.clientHeight;
 
     unityInstance.Module.InternalBrowser.requestAnimationFrame = frameInject;
     document.addEventListener('toggleAR', onButtonClicked, false);

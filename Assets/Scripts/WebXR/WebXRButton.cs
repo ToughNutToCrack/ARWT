@@ -8,6 +8,7 @@ namespace ARWT.WebXR{
         [System.Obsolete]
         public void onClick(){
             Application.ExternalCall("onButtonClicked");
+            gameObject.SetActive(false);
         }
     }
 }
