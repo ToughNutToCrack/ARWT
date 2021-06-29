@@ -3,27 +3,44 @@ const unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BU
 let isCameraReady = false;
 let isCopyTransformARReady = false;
 let isTouchListenerReady = false;
+let imageTrackingRequired = true;
 let gl = null;
 let unityCanvas = null;
 let frameDrawer = null;
 let xrSession = null;
 let xrRefSpace = null;
-let xrViewerSpace = null
-let xrHitTestSource = null
-let isValidHitTest = false
-let hitTestPosition = null
+let xrViewerSpace = null;
+let xrHitTestSource = null;
+let isValidHitTest = false;
+let hitTestPosition = null;
+let xrTransientInputHitTestSource = null;
 
-function cameraReady(){
+function cameraReady() {
     isCameraReady = true;
 }
 
-function dcopyARTransformReady(){
+function dcopyARTransformReady() {
     isCopyTransformARReady = true;
 }
 
-function touchListenerReady(){
+function touchListenerReady() {
     isTouchListenerReady = true
 }
+
+function requireImgTracking() {
+    imageTrackingRequired = true;
+}
+
+let imgBitmap;
+let isImgTrackingReady = false;
+(async () => {
+    if(imageTrackingRequired){
+        const img = document.getElementById('img');
+        await img.decode();
+        imgBitmap = await createImageBitmap(img);
+        isImgTrackingReady = true;
+    }
+})()
 
 function quaternionToUnity(q) {
     q.x *= -1;
@@ -36,7 +53,7 @@ function vec3ToUnity(v) {
     return v;
 }
 
-function initUnity(){
+function initUnity() {
     gl = unityInstance.Module.ctx;
     unityCanvas = unityInstance.Module.canvas;
     unityCanvas.width = document.documentElement.clientWidth;
@@ -48,7 +65,7 @@ function initUnity(){
 }
 
 
-function setupObject(){
+function setupObject() {
     let position = new THREE.Vector3(0, 0, -1.5);
     let rotation = new THREE.Quaternion(0, 0, 0, 0);
     let scale = new THREE.Vector3(.5, .5, .5);
@@ -60,11 +77,23 @@ function setupObject(){
     unityInstance.SendMessage("CopyARTransform", "transofrmInfos", serializedInfos);
 }
 
-function onButtonClicked(){
+function onButtonClicked() {
     if(!xrSession){
-        navigator.xr.requestSession('immersive-ar', {
-            requiredFeatures: ['local-floor', 'hit-test'] 
-        }).then(onSessionStarted, onRequestSessionError);
+        const options = !imageTrackingRequired ?
+        {
+            requiredFeatures: ['local-floor', 'hit-test']
+        }
+        :
+        {
+            requiredFeatures: ['local-floor', 'image-tracking'],
+            trackedImages: [
+                {
+                    image: imgBitmap,
+                    widthInMeters: 0.05
+                }
+            ]
+        }
+        navigator.xr.requestSession('immersive-ar', options).then(onSessionStarted, onRequestSessionError);
     }else{
         xrSession.end();
     }
@@ -82,24 +111,35 @@ function onSessionStarted(session) {
     unityInstance.Module.canvas.width = glLayer.framebufferWidth;
     unityInstance.Module.canvas.height = glLayer.framebufferHeight;
 
-    session.requestReferenceSpace('viewer').then((refSpace) => {
-        xrViewerSpace = refSpace;
-        // session.requestHitTestSource({ space: xrViewerSpace }).then((hitTestSource) => {
-        //     xrHitTestSource = hitTestSource;
-        // });
-        session.requestHitTestSourceForTransientInput({ profile:'generic-touchscreen'}).then((hitTestSource) => {
-            xrTransientInputHitTestSource = hitTestSource;
-        });
-    });
+    
+    // session.requestReferenceSpace('viewer').then((refSpace) => {
+    //     xrViewerSpace = refSpace;
+    //     // session.requestHitTestSource({ space: xrViewerSpace }).then((hitTestSource) => {
+    //     //     xrHitTestSource = hitTestSource;
+    //     // });
+       
+    // });
+   
+    if(!imageTrackingRequired){
+        session.requestReferenceSpace('local').then((refSpace) => {
+            xrRefSpace = refSpace;
+            unityInstance.Module.InternalBrowser.requestAnimationFrame(frameDrawer);
 
-    session.requestReferenceSpace('local').then((refSpace) => {
-        xrRefSpace = refSpace;
-        unityInstance.Module.InternalBrowser.requestAnimationFrame(frameDrawer);
-    });
+            session.requestHitTestSourceForTransientInput({ profile:'generic-touchscreen' }).then((hitTestSource) => {
+                xrTransientInputHitTestSource = hitTestSource;
+            });
+            
+        });
+    }else{
+        session.requestReferenceSpace('viewer').then((refSpace) => {
+            xrRefSpace = refSpace;
+            unityInstance.Module.InternalBrowser.requestAnimationFrame(frameDrawer);
+        });
+    }
 
 }
 
-function frameInject(raf){
+function frameInject(raf) {
     if (!frameDrawer){
           frameDrawer = raf;
         }
@@ -111,7 +151,7 @@ function frameInject(raf){
     }
 }
 
-function onSelect(event){
+function onSelect(event) {
     if(isValidHitTest){
         const serializedPos = `${[hitTestPosition.x, hitTestPosition.y, hitTestPosition.z]}`
         unityInstance.SendMessage("HitListener", "setHit", serializedPos);
@@ -177,19 +217,36 @@ function onXRFrame(frame) {
             // }
         // }
         
-        if(xrTransientInputHitTestSource){
-          
-            let hitTestResults = frame.getHitTestResultsForTransientInput(xrTransientInputHitTestSource);
-            if (hitTestResults.length > 0) {
-                let p = hitTestResults[0].results[0]
-                if(p != null){
-                    let newPose = p.getPose(xrRefSpace);
-                    let position = newPose.transform.position;
-                    let pos = new THREE.Vector3(position.x, position.y, position.z);
-                    pos = vec3ToUnity(pos);
-                    isValidHitTest = true
-                    hitTestPosition = pos
+        if(!imageTrackingRequired){
+            if(xrTransientInputHitTestSource){
+                let hitTestResults = frame.getHitTestResultsForTransientInput(xrTransientInputHitTestSource);
+                if (hitTestResults.length > 0) {
+                    let p = hitTestResults[0].results[0]
+                    if(p != null){
+                        let newPose = p.getPose(xrRefSpace);
+                        let position = newPose.transform.position;
+                        let pos = new THREE.Vector3(position.x, position.y, position.z);
+                        pos = vec3ToUnity(pos);
+                        isValidHitTest = true
+                        hitTestPosition = pos
+                    }
                 }
+            }
+        }else{
+            const results = frame.getImageTrackingResults();
+            for (const result of results) {
+                const imgPose = frame.getPose(result.imageSpace, xrRefSpace);
+                let position = imgPose.transform.position;
+                position = new THREE.Vector3(position.x, position.y, position.z);
+                let rotation = imgPose.transform.orientation;
+                rotation = new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+                let scale = new THREE.Vector3(1, 1, 1);
+
+                position = vec3ToUnity(position);
+                rotation = quaternionToUnity(rotation);
+
+                const serializedInfos = `aaa,true,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
+                unityInstance.SendMessage("TrackedImage", "transofrmInfos", serializedInfos);
             }
         }
         
