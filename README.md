@@ -16,6 +16,9 @@ ARWT is a library that allows you to <b> use Unity to build AR Web applications<
 Currently, we are using WebXR and ARjs. 
 </p>
 
+https://user-images.githubusercontent.com/11076285/123983829-74b88800-d9c4-11eb-94d9-8676813e9e8e.mp4
+
+
 ## 🤷 Why?
 <p>
 One of the most requested things is to create AR experiences for the Web to avoid forcing the end-user to download a dedicated application. We all know how boring it can be downloading an application that we will use for a limited time. Therefore, you often risk losing a potential customer or limiting the spread of your AR experience.
@@ -39,10 +42,12 @@ The best thing you can do to support us is testing our library, <b>contributing 
 <p> We want the community to lead the growth of this project.</p>
 <p>
 If you want you can take part in this by:
+</p>
+
 - proposing an upgrade through a pull request
 - using the issue section to report a problem or a proposal
 - being active and participating in the discussion on the discord channel dedicated to ARWT
-</p>
+
 
 ## 📖 Wiki 
 <p align="left"><a href="https://github.com/ToughNutToCrack/ARWT/wiki/1.-Home" target="_blank">Check this link for the Documentation</a></p>
