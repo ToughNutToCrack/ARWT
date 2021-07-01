@@ -19,3 +19,10 @@ setTimeout(function () {
         }
     }
 }, 0);
+
+Module['WebXR'] = Module['WebXR'] || {};
+
+Module['WebXR'].ImageTracking = function (value) {
+    Module.WebXR.imageTrackingRequired = value;
+    console.log("called from Unity", value)
+}

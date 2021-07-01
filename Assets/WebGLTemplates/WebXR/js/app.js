@@ -3,7 +3,7 @@ const unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BU
 let isCameraReady = false;
 let isCopyTransformARReady = false;
 let isTouchListenerReady = false;
-let imageTrackingRequired = true;
+let imageTrackingRequired = false;
 let gl = null;
 let unityCanvas = null;
 let frameDrawer = null;
@@ -27,20 +27,20 @@ function touchListenerReady() {
     isTouchListenerReady = true
 }
 
-function requireImgTracking() {
-    imageTrackingRequired = true;
-}
+// function requireImgTracking() {
+//     imageTrackingRequired = true;
+// }
 
 let imgBitmap;
 let isImgTrackingReady = false;
-(async () => {
+async function initImageTrackign () {
     if(imageTrackingRequired){
         const img = document.getElementById('img');
         await img.decode();
         imgBitmap = await createImageBitmap(img);
         isImgTrackingReady = true;
     }
-})()
+}
 
 function quaternionToUnity(q) {
     q.x *= -1;
@@ -61,6 +61,10 @@ function initUnity() {
 
     unityInstance.Module.InternalBrowser.requestAnimationFrame = frameInject;
     document.addEventListener('toggleAR', onButtonClicked, false);
+    
+    imageTrackingRequired = unityInstance.Module.WebXR.imageTrackingRequired;
+    initImageTrackign();
+
     setupObject();
 }
 
