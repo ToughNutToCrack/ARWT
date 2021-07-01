@@ -1,10 +1,8 @@
 setTimeout(function () {
     Module['InternalBrowser'] = Browser || {};
-    if (GL && GL.createContext)
-    {
+    if (GL && GL.createContext) {
         GL.createContextOld = GL.createContext;
-        GL.createContext = function (canvas, webGLContextAttributes)
-        {
+        GL.createContext = function (canvas, webGLContextAttributes) {
             var contextAttributes = {
                 xrCompatible: true
             };
@@ -22,7 +20,14 @@ setTimeout(function () {
 
 Module['WebXR'] = Module['WebXR'] || {};
 
-Module['WebXR'].ImageTracking = function (value) {
+Module.WebXR.enableImageTracking = function (value){
     Module.WebXR.imageTrackingRequired = value;
-    console.log("called from Unity", value)
+}
+
+Module.WebXR.enableCamera = function () {
+    Module.WebXR.isCameraReady = true;
+}
+
+Module.WebXR.setCameraProvider = function (name) {
+    Module.WebXR.cameraProvider = name;
 }

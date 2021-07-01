@@ -1,8 +1,14 @@
 mergeInto(LibraryManager.library, {
-    InitUnity: function() {
+    initUnity: function () {
       document.dispatchEvent(new CustomEvent('UnityLoaded', {detail: 'Ready'}));
     },
-    enableImageTracking: function(value) {
-      Module.WebXR.ImageTracking(value);
+    enableCamera: function () {
+      Module.WebXR.enableCamera();
+    },
+    setCameraProvider: function (name) {
+      Module.WebXR.setCameraProvider(Pointer_stringify(name));
+    },
+    enableImageTracking: function (value) {
+      Module.WebXR.enableImageTracking(value);
     },
 });

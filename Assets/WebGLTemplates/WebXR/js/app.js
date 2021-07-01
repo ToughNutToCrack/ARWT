@@ -1,9 +1,9 @@
 const unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%");
+let WebXR;
 
-let isCameraReady = false;
-let isCopyTransformARReady = false;
-let isTouchListenerReady = false;
-let imageTrackingRequired = false;
+// let isCopyTransformARReady = false;
+// let isTouchListenerReady = false;
+
 let gl = null;
 let unityCanvas = null;
 let frameDrawer = null;
@@ -15,26 +15,19 @@ let isValidHitTest = false;
 let hitTestPosition = null;
 let xrTransientInputHitTestSource = null;
 
-function cameraReady() {
-    isCameraReady = true;
-}
 
-function dcopyARTransformReady() {
-    isCopyTransformARReady = true;
-}
+// function dcopyARTransformReady() {
+//     isCopyTransformARReady = true;
+// }
 
-function touchListenerReady() {
-    isTouchListenerReady = true
-}
-
-// function requireImgTracking() {
-//     imageTrackingRequired = true;
+// function touchListenerReady() {
+//     isTouchListenerReady = true
 // }
 
 let imgBitmap;
 let isImgTrackingReady = false;
 async function initImageTrackign () {
-    if(imageTrackingRequired){
+    if(WebXR.imageTrackingRequired){
         const img = document.getElementById('img');
         await img.decode();
         imgBitmap = await createImageBitmap(img);
@@ -61,10 +54,8 @@ function initUnity() {
 
     unityInstance.Module.InternalBrowser.requestAnimationFrame = frameInject;
     document.addEventListener('toggleAR', onButtonClicked, false);
-    
-    imageTrackingRequired = unityInstance.Module.WebXR.imageTrackingRequired;
+    WebXR = unityInstance.Module.WebXR;
     initImageTrackign();
-
     setupObject();
 }
 
@@ -83,7 +74,7 @@ function setupObject() {
 
 function onButtonClicked() {
     if(!xrSession){
-        const options = !imageTrackingRequired ?
+        const options = !WebXR.imageTrackingRequired ?
         {
             requiredFeatures: ['local-floor', 'hit-test']
         }
@@ -124,7 +115,7 @@ function onSessionStarted(session) {
        
     // });
    
-    if(!imageTrackingRequired){
+    if(!WebXR.imageTrackingRequired){
         session.requestReferenceSpace('local').then((refSpace) => {
             xrRefSpace = refSpace;
             unityInstance.Module.InternalBrowser.requestAnimationFrame(frameDrawer);
@@ -189,8 +180,9 @@ function onXRFrame(frame) {
             projection.transpose();
 
             const serializedProj = `${[...projection.toArray()]}`;
-            unityInstance.SendMessage("CameraMain", "setProjection", serializedProj);
-
+            if(WebXR.isCameraReady){
+                unityInstance.SendMessage(WebXR.cameraProvider, "setProjection", serializedProj);
+            }    
             let position = xrView.transform.position;
             let orientation = xrView.transform.orientation;
 
@@ -202,8 +194,10 @@ function onXRFrame(frame) {
 
             const serializedPos = `${[pos.x, pos.y, pos.z]}`
             const serializedRot = `${[rot.x, rot.y, rot.z, rot.w]}`
-            unityInstance.SendMessage("CameraMain", "setPosition", serializedPos);
-            unityInstance.SendMessage("CameraMain", "setRotation", serializedRot);
+            if(WebXR.isCameraReady){
+                unityInstance.SendMessage(WebXR.cameraProvider, "setPosition", serializedPos);
+                unityInstance.SendMessage(WebXR.cameraProvider, "setRotation", serializedRot);
+            }
 
             unityInstance.SendMessage("CopyARTransform", "setVisible", "true");
 
@@ -221,7 +215,7 @@ function onXRFrame(frame) {
             // }
         // }
         
-        if(!imageTrackingRequired){
+        if(!WebXR.imageTrackingRequired){
             if(xrTransientInputHitTestSource){
                 let hitTestResults = frame.getHitTestResultsForTransientInput(xrTransientInputHitTestSource);
                 if (hitTestResults.length > 0) {

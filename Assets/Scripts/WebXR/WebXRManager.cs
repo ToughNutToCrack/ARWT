@@ -12,17 +12,16 @@ namespace ARWT.WebXR{
 
         #if UNITY_WEBGL && !UNITY_EDITOR
             [DllImport("__Internal")]
-            private static extern void InitUnity();
+            private static extern void initUnity();
             [DllImport("__Internal")]
             private static extern void enableImageTracking(bool value);
             
             void Awake(){
-                enableImageTracking(imageTracking);
-                
+                enableImageTracking(imageTracking);   
             }
 
             void Start(){
-                InitUnity();
+                initUnity();
             }
 
         #endif
