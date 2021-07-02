@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 506114863}
   - component: {fileID: 506114866}
   m_Layer: 0
-  m_Name: CameraPippo
+  m_Name: WebXRCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
