@@ -8,7 +8,7 @@ namespace ARWT.WebXR{
 
         [System.Obsolete]
         void Start() {
-            Application.ExternalCall("dcopyARTransformReady");
+            // Application.ExternalCall("dcopyARTransformReady");
         }
 
         public void transofrmInfos(string infos){

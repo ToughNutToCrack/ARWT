@@ -31,3 +31,7 @@ Module.WebXR.enableCamera = function () {
 Module.WebXR.setCameraProvider = function (name) {
     Module.WebXR.cameraProvider = name;
 }
+
+Module.WebXR.onButtonClicked = function (name) {
+    window.ARWT.onButtonClicked();
+}

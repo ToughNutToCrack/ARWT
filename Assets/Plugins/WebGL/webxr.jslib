@@ -2,6 +2,9 @@ mergeInto(LibraryManager.library, {
     initUnity: function () {
       document.dispatchEvent(new CustomEvent('UnityLoaded', {detail: 'Ready'}));
     },
+    startXR: function () {
+      Module.WebXR.onButtonClicked();
+    },
     enableCamera: function () {
       Module.WebXR.enableCamera();
     },

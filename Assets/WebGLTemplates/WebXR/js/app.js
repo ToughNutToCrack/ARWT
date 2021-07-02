@@ -1,5 +1,6 @@
 const unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%");
 let WebXR;
+window.ARWT = {}
 
 // let isCopyTransformARReady = false;
 // let isTouchListenerReady = false;
@@ -53,7 +54,7 @@ function initUnity() {
     unityCanvas.height = document.documentElement.clientHeight;
 
     unityInstance.Module.InternalBrowser.requestAnimationFrame = frameInject;
-    document.addEventListener('toggleAR', onButtonClicked, false);
+    // document.addEventListener('toggleAR', onButtonClicked, false);
     WebXR = unityInstance.Module.WebXR;
     initImageTrackign();
     setupObject();
@@ -72,7 +73,8 @@ function setupObject() {
     unityInstance.SendMessage("CopyARTransform", "transofrmInfos", serializedInfos);
 }
 
-function onButtonClicked() {
+// function onButtonClicked() {
+window.ARWT.onButtonClicked = () => {
     if(!xrSession){
         const options = !WebXR.imageTrackingRequired ?
         {
