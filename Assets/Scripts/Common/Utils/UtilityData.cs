@@ -52,6 +52,10 @@ namespace ARWT.Core{
             return new Quaternion(x, y, z, w);
         }
 
+        public static bool getBool(string val){
+            return bool.Parse(val);
+        }
+
         public static (string name, bool isVisible, Vector3 position, Quaternion rotation, Vector3 scale) getTransformInfos(string val){
             string[] datas =  val.Split(","[0]);
 

@@ -54,7 +54,6 @@ function initUnity() {
     unityCanvas.height = document.documentElement.clientHeight;
 
     unityInstance.Module.InternalBrowser.requestAnimationFrame = frameInject;
-    // document.addEventListener('toggleAR', onButtonClicked, false);
     WebXR = unityInstance.Module.WebXR;
     initImageTrackign();
     setupObject();
@@ -73,7 +72,6 @@ function setupObject() {
     unityInstance.SendMessage("CopyARTransform", "transofrmInfos", serializedInfos);
 }
 
-// function onButtonClicked() {
 window.ARWT.onButtonClicked = () => {
     if(!xrSession){
         const options = !WebXR.imageTrackingRequired ?
@@ -183,7 +181,7 @@ function onXRFrame(frame) {
 
             const serializedProj = `${[...projection.toArray()]}`;
             if(WebXR.isCameraReady){
-                unityInstance.SendMessage(WebXR.cameraProvider, "setProjection", serializedProj);
+                unityInstance.SendMessage(WebXR.cameraProvider, WebXR.camera.setProjection, serializedProj);
             }    
             let position = xrView.transform.position;
             let orientation = xrView.transform.orientation;
@@ -197,8 +195,8 @@ function onXRFrame(frame) {
             const serializedPos = `${[pos.x, pos.y, pos.z]}`
             const serializedRot = `${[rot.x, rot.y, rot.z, rot.w]}`
             if(WebXR.isCameraReady){
-                unityInstance.SendMessage(WebXR.cameraProvider, "setPosition", serializedPos);
-                unityInstance.SendMessage(WebXR.cameraProvider, "setRotation", serializedRot);
+                unityInstance.SendMessage(WebXR.cameraProvider, WebXR.camera.setPosition, serializedPos);
+                unityInstance.SendMessage(WebXR.cameraProvider, WebXR.camera.setRotation, serializedRot);
             }
 
             unityInstance.SendMessage("CopyARTransform", "setVisible", "true");

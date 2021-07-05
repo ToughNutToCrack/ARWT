@@ -23,13 +23,13 @@ Module['WebXR'] = Module['WebXR'] || {};
 Module.WebXR.enableImageTracking = function (value){
     Module.WebXR.imageTrackingRequired = value;
 }
-
-Module.WebXR.enableCamera = function () {
-    Module.WebXR.isCameraReady = true;
-}
-
 Module.WebXR.setCameraProvider = function (name) {
+    Module.WebXR.isCameraReady = true;
     Module.WebXR.cameraProvider = name;
+    Module.WebXR.camera = {};
+    Module.WebXR.camera.setProjection = 'setProjection';
+    Module.WebXR.camera.setPosition = 'setPosition';
+    Module.WebXR.camera.setRotation = 'setRotation';
 }
 
 Module.WebXR.onButtonClicked = function (name) {
