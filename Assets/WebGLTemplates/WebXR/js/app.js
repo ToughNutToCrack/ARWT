@@ -149,7 +149,9 @@ function frameInject(raf) {
 function onSelect(event) {
     if(isValidHitTest){
         const serializedPos = `${[hitTestPosition.x, hitTestPosition.y, hitTestPosition.z]}`
-        unityInstance.SendMessage("HitListener", "setHit", serializedPos);
+        if(WebXR.isHitProviderReady){
+            unityInstance.SendMessage(WebXR.hitProvider, WebXR.hit.setHit, serializedPos);
+        }
     }
 }
 

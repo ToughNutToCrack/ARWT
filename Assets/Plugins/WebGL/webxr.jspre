@@ -32,6 +32,13 @@ Module.WebXR.setCameraProvider = function (name) {
     Module.WebXR.camera.setRotation = 'setRotation';
 }
 
+Module.WebXR.setHitProvider = function(name){
+    Module.WebXR.isHitProviderReady = true;
+    Module.WebXR.hitProvider = name;
+    Module.WebXR.hit = {};
+    Module.WebXR.hit.setHit = 'setHit';
+}
+
 Module.WebXR.onButtonClicked = function (name) {
     window.ARWT.onButtonClicked();
 }

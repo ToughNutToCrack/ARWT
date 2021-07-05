@@ -12,17 +12,14 @@ namespace ARWT.WebXR{
             p[2, 3] = defProj[14];
 
             cam.projectionMatrix = p;
-            print("setProjection");
         }
 
         public override void setPosition(string val){
             transform.position = UtilityData.getVector3(val);
-            print("setPosition");
         }
 
         public override void setRotation(string val){
             transform.rotation = UtilityData.getQuaternion(val);
-            print("setRotation");
         }
 
     }
