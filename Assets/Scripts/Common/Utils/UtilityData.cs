@@ -51,5 +51,30 @@ namespace ARWT.Core{
             float w = float.Parse(v[3].ToString());
             return new Quaternion(x, y, z, w);
         }
+
+        public static (string name, bool isVisible, Vector3 position, Quaternion rotation, Vector3 scale) getTransformInfos(string val){
+            string[] datas =  val.Split(","[0]);
+
+            string n = datas[0].Trim();
+            bool v = bool.Parse(datas[1]);
+            float posX = float.Parse(datas[2].ToString());
+            float posY = float.Parse(datas[3].ToString());
+            float posZ = float.Parse(datas[4].ToString());
+            float rotX = float.Parse(datas[5].ToString());
+            float rotY = float.Parse(datas[6].ToString());
+            float rotZ = float.Parse(datas[7].ToString());
+            float rotW = float.Parse(datas[8].ToString());
+            float scaX = float.Parse(datas[9].ToString());
+            float scaY = float.Parse(datas[10].ToString());
+            float scaZ = float.Parse(datas[11].ToString());
+
+            return (
+                name: n,
+                isVisible: v,
+                position: new Vector3(posX, posY, posZ),
+                rotation: new Quaternion(rotX, rotY, rotZ, rotW),
+                scale: new Vector3(scaX, scaY, scaZ)
+            );
+        }
     }
 }

@@ -5,10 +5,8 @@ mergeInto(LibraryManager.library, {
     startXR: function () {
       Module.WebXR.onButtonClicked();
     },
-    enableCamera: function () {
-      Module.WebXR.enableCamera();
-    },
     setCameraProvider: function (name) {
+      Module.WebXR.enableCamera();
       Module.WebXR.setCameraProvider(Pointer_stringify(name));
     },
     enableImageTracking: function (value) {
