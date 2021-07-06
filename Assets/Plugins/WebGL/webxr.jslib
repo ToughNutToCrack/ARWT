@@ -12,7 +12,7 @@ mergeInto(LibraryManager.library, {
       Module.WebXR.setHitProvider(Pointer_stringify(name));
     },
     setImageTrackingProvider: function (name) {
-      // Module.WebXR.setHitProvider(Pointer_stringify(name));
+      Module.WebXR.setImageTrackingProvider(Pointer_stringify(name));
     },
     enableImageTracking: function (value) {
       Module.WebXR.enableImageTracking(value);

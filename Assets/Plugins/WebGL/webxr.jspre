@@ -20,9 +20,6 @@ setTimeout(function () {
 
 Module['WebXR'] = Module['WebXR'] || {};
 
-Module.WebXR.enableImageTracking = function (value){
-    Module.WebXR.imageTrackingRequired = value;
-}
 Module.WebXR.setCameraProvider = function (name) {
     Module.WebXR.isCameraReady = true;
     Module.WebXR.cameraProvider = name;
@@ -37,6 +34,17 @@ Module.WebXR.setHitProvider = function(name){
     Module.WebXR.hitProvider = name;
     Module.WebXR.hit = {};
     Module.WebXR.hit.setHit = 'setHit';
+}
+
+Module.WebXR.enableImageTracking = function (value){
+    Module.WebXR.imageTrackingRequired = value;
+}
+
+Module.WebXR.setImageTrackingProvider = function(name){
+    Module.WebXR.isImageTrackingProviderReady = true;
+    Module.WebXR.imageTrackingProvider = name;
+    Module.WebXR.imageTracking = {};
+    Module.WebXR.imageTracking.setTrackedImage = 'setTrackedImage';
 }
 
 Module.WebXR.onButtonClicked = function (name) {

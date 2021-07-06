@@ -2,9 +2,6 @@ const unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BU
 let WebXR;
 window.ARWT = {}
 
-// let isCopyTransformARReady = false;
-// let isTouchListenerReady = false;
-
 let gl = null;
 let unityCanvas = null;
 let frameDrawer = null;
@@ -15,15 +12,6 @@ let xrHitTestSource = null;
 let isValidHitTest = false;
 let hitTestPosition = null;
 let xrTransientInputHitTestSource = null;
-
-
-// function dcopyARTransformReady() {
-//     isCopyTransformARReady = true;
-// }
-
-// function touchListenerReady() {
-//     isTouchListenerReady = true
-// }
 
 let imgBitmap;
 let isImgTrackingReady = false;
@@ -56,21 +44,21 @@ function initUnity() {
     unityInstance.Module.InternalBrowser.requestAnimationFrame = frameInject;
     WebXR = unityInstance.Module.WebXR;
     initImageTrackign();
-    setupObject();
+    // setupObject();
 }
 
 
-function setupObject() {
-    let position = new THREE.Vector3(0, 0, -1.5);
-    let rotation = new THREE.Quaternion(0, 0, 0, 0);
-    let scale = new THREE.Vector3(.5, .5, .5);
+// function setupObject() {
+//     let position = new THREE.Vector3(0, 0, -1.5);
+//     let rotation = new THREE.Quaternion(0, 0, 0, 0);
+//     let scale = new THREE.Vector3(.5, .5, .5);
 
-    position = vec3ToUnity(position);
-    rotation = quaternionToUnity(rotation);
+//     position = vec3ToUnity(position);
+//     rotation = quaternionToUnity(rotation);
 
-    const serializedInfos = `aaa,false,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
-    unityInstance.SendMessage("CopyARTransform", "transofrmInfos", serializedInfos);
-}
+//     const serializedInfos = `aaa,false,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
+//     unityInstance.SendMessage("CopyARTransform", "transofrmInfos", serializedInfos);
+// }
 
 window.ARWT.onButtonClicked = () => {
     if(!xrSession){
@@ -201,7 +189,7 @@ function onXRFrame(frame) {
                 unityInstance.SendMessage(WebXR.cameraProvider, WebXR.camera.setRotation, serializedRot);
             }
 
-            unityInstance.SendMessage("CopyARTransform", "setVisible", "true");
+            // unityInstance.SendMessage("CopyARTransform", "setVisible", "true");
 
         }
 
@@ -233,20 +221,22 @@ function onXRFrame(frame) {
                 }
             }
         }else{
-            const results = frame.getImageTrackingResults();
-            for (const result of results) {
-                const imgPose = frame.getPose(result.imageSpace, xrRefSpace);
-                let position = imgPose.transform.position;
-                position = new THREE.Vector3(position.x, position.y, position.z);
-                let rotation = imgPose.transform.orientation;
-                rotation = new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
-                let scale = new THREE.Vector3(1, 1, 1);
+            if(WebXR.isImageTrackingProviderReady){
+                const results = frame.getImageTrackingResults();
+                for (const result of results) {
+                    const imgPose = frame.getPose(result.imageSpace, xrRefSpace);
+                    let position = imgPose.transform.position;
+                    position = new THREE.Vector3(position.x, position.y, position.z);
+                    let rotation = imgPose.transform.orientation;
+                    rotation = new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+                    let scale = new THREE.Vector3(1, 1, 1);
 
-                position = vec3ToUnity(position);
-                rotation = quaternionToUnity(rotation);
+                    position = vec3ToUnity(position);
+                    rotation = quaternionToUnity(rotation);
 
-                const serializedInfos = `aaa,true,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
-                unityInstance.SendMessage("TrackedImage", "transofrmInfos", serializedInfos);
+                    const serializedInfos = `aaa,true,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
+                    unityInstance.SendMessage(WebXR.imageTrackingProvider, WebXR.imageTracking.setTrackedImage, serializedInfos);
+                }
             }
         }
         
