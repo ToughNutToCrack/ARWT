@@ -47,7 +47,8 @@ namespace ARWT.Core{
                     var assetPath = AssetDatabase.GetAssetPath(t.image);
                     var destinationPath = Path.Combine(completeImagesPath, $"{t.name}.jpg");
                     // Debug.Log($"{t.name} : {assetPath} : {destinationPath}");
-                    FileUtil.CopyFileOrDirectory(assetPath, destinationPath);
+                    // FileUtil.CopyFileOrDirectory(assetPath, destinationPath);
+                    FileUtil.ReplaceFile(assetPath, destinationPath);
                 }
                 generateImagesHTML(targetPath, library.trackables);
             }

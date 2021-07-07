@@ -13,13 +13,22 @@ let isValidHitTest = false;
 let hitTestPosition = null;
 let xrTransientInputHitTestSource = null;
 
-let imgBitmap;
+let imgsBitmap = [];
 let isImgTrackingReady = false;
 async function initImageTrackign () {
+    // if(WebXR.imageTrackingRequired){
+    //     const img = document.getElementById('img');
+    //     await img.decode();
+    //     imgBitmap = await createImageBitmap(img);
+    //     isImgTrackingReady = true;
+    // }
+
     if(WebXR.imageTrackingRequired){
-        const img = document.getElementById('img');
-        await img.decode();
-        imgBitmap = await createImageBitmap(img);
+        WebXR.imageTracking.images.forEach(async image =>{
+            const img = document.getElementById(image);
+            await img.decode();
+            imgsBitmap.push({name: image, image: await createImageBitmap(img), widthInMeters: 0.05});
+        });
         isImgTrackingReady = true;
     }
 }
@@ -69,12 +78,13 @@ window.ARWT.onButtonClicked = () => {
         :
         {
             requiredFeatures: ['local-floor', 'image-tracking'],
-            trackedImages: [
-                {
-                    image: imgBitmap,
-                    widthInMeters: 0.05
-                }
-            ]
+            trackedImages : imgsBitmap
+            // trackedImages: [
+            //     {
+            //         image: imgBitmap,
+            //         widthInMeters: 0.05
+            //     }
+            // ]
         }
         navigator.xr.requestSession('immersive-ar', options).then(onSessionStarted, onRequestSessionError);
     }else{
@@ -223,9 +233,11 @@ function onXRFrame(frame) {
         }else{
             if(WebXR.isImageTrackingProviderReady){
                 const results = frame.getImageTrackingResults();
+                console.log(results);
                 for (const result of results) {
                     const imgPose = frame.getPose(result.imageSpace, xrRefSpace);
                     if(imgPose != null){
+                        let name =  imgsBitmap[result.index].name;
                         let position = imgPose.transform.position;
                         position = new THREE.Vector3(position.x, position.y, position.z);
                         let rotation = imgPose.transform.orientation;
@@ -235,7 +247,7 @@ function onXRFrame(frame) {
                         position = vec3ToUnity(position);
                         rotation = quaternionToUnity(rotation);
 
-                        const serializedInfos = `aaa,true,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
+                        const serializedInfos = `${name},true,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
                         unityInstance.SendMessage(WebXR.imageTrackingProvider, WebXR.imageTracking.setTrackedImage, serializedInfos);
                     }
                 }

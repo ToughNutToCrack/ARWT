@@ -11,7 +11,7 @@ namespace ARWT.WebXR{
         private static extern void setCameraProvider(string name);
         #endif  
 
-        void Start() {
+        void Awake() {
             cam = GetComponent<Camera>();
             #if UNITY_WEBGL && !UNITY_EDITOR
             setCameraProvider(gameObject.name);

@@ -10,7 +10,7 @@ namespace ARWT.WebXR{
         private static extern void setHitProvider(string name);
         #endif  
 
-        void Start() {
+        void Awake() {
             #if UNITY_WEBGL && !UNITY_EDITOR
             setHitProvider(gameObject.name);
             #endif  

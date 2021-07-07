@@ -43,7 +43,8 @@ Module.WebXR.enableImageTracking = function (value){
 Module.WebXR.setImageTrackingProvider = function(name){
     Module.WebXR.isImageTrackingProviderReady = true;
     Module.WebXR.imageTrackingProvider = name;
-    Module.WebXR.imageTracking = {};
+    Module.WebXR.imageTracking = Module.WebXR.imageTracking || {};
+    Module.WebXR.imageTracking.images = ["Qui", "Qua"];
     Module.WebXR.imageTracking.setTrackedImage = 'setTrackedImage';
 }
 
