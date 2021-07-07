@@ -23,20 +23,22 @@ namespace ARWT.Core{
 
         [PostProcessBuild]
         public static void OnPostProcessBuild(BuildTarget target, string targetPath){
-            var path = Path.Combine(targetPath, "Build/UnityLoader.js");
-            var text = File.ReadAllText(path);
-            text = text.Replace("UnityLoader.SystemInfo.mobile", "false");
-            File.WriteAllText(path, text);
+            if(PlayerSettings.WebGL.template.Contains("WebAR")){
+                var path = Path.Combine(targetPath, "Build/UnityLoader.js");
+                var text = File.ReadAllText(path);
+                text = text.Replace("UnityLoader.SystemInfo.mobile", "false");
+                File.WriteAllText(path, text);
 
-            string buildJsonPath = "Build/" + getName(targetPath) + ".json";
-            path = Path.Combine(targetPath, "Build/" + getName(targetPath) + ".json");
-            replaceInFile(path, "backgroundColor", "");
+                string buildJsonPath = "Build/" + getName(targetPath) + ".json";
+                path = Path.Combine(targetPath, "Build/" + getName(targetPath) + ".json");
+                replaceInFile(path, "backgroundColor", "");
 
-            generateHTML(targetPath);
-            copyImages(targetPath);
+                generateHTML(targetPath);
+                copyImages(targetPath);
 
-            string unityDeclaration = $"const unityInstance = UnityLoader.instantiate(\"unityContainer\", \"{buildJsonPath}\");";
-            replaceInFile(Path.Combine(targetPath, appJS), buildPlaceholder, unityDeclaration);
+                string unityDeclaration = $"const unityInstance = UnityLoader.instantiate(\"unityContainer\", \"{buildJsonPath}\");";
+                replaceInFile(Path.Combine(targetPath, appJS), buildPlaceholder, unityDeclaration);
+            }
         }
 
         static string getName(string p){

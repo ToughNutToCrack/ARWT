@@ -1079,7 +1079,7 @@ GameObject:
   - component: {fileID: 1618478708}
   - component: {fileID: 1618478707}
   m_Layer: 0
-  m_Name: CopyARTransform
+  m_Name: WebXRTransformController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1094,7 +1094,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1618478706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00db08b891e858b4b862fd4f9bb21bbc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0eea5e60c3c64be448a914b666c3ad50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   child: {fileID: 1658854098}
