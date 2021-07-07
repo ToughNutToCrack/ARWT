@@ -57,7 +57,7 @@ function initUnity() {
 //     rotation = quaternionToUnity(rotation);
 
 //     const serializedInfos = `aaa,false,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
-//     unityInstance.SendMessage("CopyARTransform", "transofrmInfos", serializedInfos);
+//     unityInstance.SendMessage("WebXRTransformController", "transofrmInfos", serializedInfos);
 // }
 
 window.ARWT.onButtonClicked = () => {
@@ -189,7 +189,7 @@ function onXRFrame(frame) {
                 unityInstance.SendMessage(WebXR.cameraProvider, WebXR.camera.setRotation, serializedRot);
             }
 
-            // unityInstance.SendMessage("CopyARTransform", "setVisible", "true");
+            // unityInstance.SendMessage("WebXRTransformController", "setVisible", "true");
 
         }
 
