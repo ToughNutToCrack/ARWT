@@ -5,7 +5,6 @@ namespace ARWT.WebXR{
     public abstract class WebXRImageTrackignProvider : MonoBehaviour{
         
         public ImageLibrary library;
-        string[] weekDays = new string[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
         #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
