@@ -14,6 +14,9 @@ mergeInto(LibraryManager.library, {
     setImageTrackingProvider: function (name) {
       Module.WebXR.setImageTrackingProvider(Pointer_stringify(name));
     },
+    addTrackableImage: function(name, width, height){
+      Module.WebXR.addTrackableImage(Pointer_stringify(name), width, height);
+    },
     enableImageTracking: function (value) {
       Module.WebXR.enableImageTracking(value);
     },

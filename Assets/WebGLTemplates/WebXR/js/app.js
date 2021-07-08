@@ -25,9 +25,9 @@ async function initImageTrackign () {
 
     if(WebXR.imageTrackingRequired){
         WebXR.imageTracking.images.forEach(async image =>{
-            const img = document.getElementById(image);
+            const img = document.getElementById(image.name);
             await img.decode();
-            imgsBitmap.push({name: image, image: await createImageBitmap(img), widthInMeters: 0.05});
+            imgsBitmap.push({name: image.name, image: await createImageBitmap(img), widthInMeters: image.width, heightInMeters: image.height});
         });
         isImgTrackingReady = true;
     }
@@ -233,7 +233,6 @@ function onXRFrame(frame) {
         }else{
             if(WebXR.isImageTrackingProviderReady){
                 const results = frame.getImageTrackingResults();
-                console.log(results);
                 for (const result of results) {
                     const imgPose = frame.getPose(result.imageSpace, xrRefSpace);
                     if(imgPose != null){
@@ -247,7 +246,9 @@ function onXRFrame(frame) {
                         position = vec3ToUnity(position);
                         rotation = quaternionToUnity(rotation);
 
-                        const serializedInfos = `${name},true,${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
+                        let isTracked = result.trackingState == "tracked";
+
+                        const serializedInfos = `${name},${isTracked},${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
                         unityInstance.SendMessage(WebXR.imageTrackingProvider, WebXR.imageTracking.setTrackedImage, serializedInfos);
                     }
                 }

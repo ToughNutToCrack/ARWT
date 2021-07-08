@@ -44,8 +44,16 @@ Module.WebXR.setImageTrackingProvider = function(name){
     Module.WebXR.isImageTrackingProviderReady = true;
     Module.WebXR.imageTrackingProvider = name;
     Module.WebXR.imageTracking = Module.WebXR.imageTracking || {};
-    Module.WebXR.imageTracking.images = ["Qui", "Qua"];
+    Module.WebXR.imageTracking.images = [];
     Module.WebXR.imageTracking.setTrackedImage = 'setTrackedImage';
+}
+
+Module.WebXR.addTrackableImage = function(name, width, height){
+    Module.WebXR.imageTracking.images.push({
+        name: name,
+        width: width,
+        height: height
+    });
 }
 
 Module.WebXR.onButtonClicked = function (name) {
