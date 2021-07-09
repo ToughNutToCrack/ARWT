@@ -246,9 +246,7 @@ function onXRFrame(frame) {
                         position = vec3ToUnity(position);
                         rotation = quaternionToUnity(rotation);
 
-                        let isTracked = result.trackingState == "tracked";
-
-                        const serializedInfos = `${name},${isTracked},${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
+                        const serializedInfos = `${name},${result.trackingState},${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
                         unityInstance.SendMessage(WebXR.imageTrackingProvider, WebXR.imageTracking.setTrackedImage, serializedInfos);
                     }
                 }
