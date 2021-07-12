@@ -1,7 +1,11 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace ARWT.WebXR{
+
+    public enum TrackableImageStatus{ tracked, emulated}
+
     public abstract class WebXRImageTrackignProvider : MonoBehaviour{
         
         public ImageLibrary library;
@@ -19,6 +23,11 @@ namespace ARWT.WebXR{
             library.trackables.ForEach( t => addTrackableImage(t.name, t.width, t.height)); 
             #endif
              
+        }
+
+        public TrackableImageStatus getStatus(string status){
+            TrackableImageStatus s = (TrackableImageStatus) Enum.Parse(typeof(TrackableImageStatus), status);
+            return s;
         }
 
         public abstract void setTrackedImage(string val);
