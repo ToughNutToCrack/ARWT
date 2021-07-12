@@ -10,7 +10,7 @@ namespace ARWT.WebXR{
         public GameObject gameObject;
     }
 
-    public class TrackedImage : WebXRImageTrackignProvider{
+    public class ImageTrackingListener : WebXRImageTrackignProvider{
         [SerializeField]
         List<TrackedImageObject> objects;
 

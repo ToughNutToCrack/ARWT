@@ -40,17 +40,25 @@ namespace ARWT.Core{
             string[] guids = AssetDatabase.FindAssets("t:ImageLibrary", null);
             
             if(guids.Length > 0){
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                ImageLibrary library = AssetDatabase.LoadAssetAtPath<ImageLibrary>(path);
-                var completeImagesPath = Path.Combine(targetPath, imagesPath);
-                foreach(var t in library.trackables){
-                    var assetPath = AssetDatabase.GetAssetPath(t.image);
-                    var destinationPath = Path.Combine(completeImagesPath, $"{t.name}.jpg");
-                    // Debug.Log($"{t.name} : {assetPath} : {destinationPath}");
-                    // FileUtil.CopyFileOrDirectory(assetPath, destinationPath);
-                    FileUtil.ReplaceFile(assetPath, destinationPath);
+                
+                List<TrackableImage> totalTrackables = new List<TrackableImage>();
+                
+                foreach (var g in guids) {
+                    string path = AssetDatabase.GUIDToAssetPath(g);
+                    ImageLibrary library = AssetDatabase.LoadAssetAtPath<ImageLibrary>(path);
+                    var completeImagesPath = Path.Combine(targetPath, imagesPath);
+                    
+                    foreach(var t in library.trackables){
+                        var assetPath = AssetDatabase.GetAssetPath(t.image);
+                        var destinationPath = Path.Combine(completeImagesPath, $"{t.name}.jpg");
+                        // Debug.Log($"{t.name} : {assetPath} : {destinationPath}");
+                        // FileUtil.CopyFileOrDirectory(assetPath, destinationPath);
+                        FileUtil.ReplaceFile(assetPath, destinationPath);
+                        totalTrackables.Add(t);
+                    }
                 }
-                generateImagesHTML(targetPath, library.trackables);
+                
+                generateImagesHTML(targetPath, totalTrackables);
             }
         }
 
