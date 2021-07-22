@@ -1,5 +1,6 @@
 ﻿using ARWT.Core;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 namespace ARWT.Marker{
     public class MarkerInfo{
@@ -19,15 +20,23 @@ namespace ARWT.Marker{
     }
 
     public class DetectionManager : Singleton<DetectionManager>{
-
+	    
+	    [DllImport("__Internal")]
+	    private static extern void DetectionManagerReady();
+	    
         public delegate void MarkerDetection(MarkerInfo m);
         public static event MarkerDetection onMarkerDetected;
         public static event MarkerDetection onMarkerVisible;
         public static event MarkerDetection onMarkerLost;
         
-        [System.Obsolete]
-        void Start() {
-            Application.ExternalCall("detectionManagerReady");
+	    void Start() {
+        	
+	        if(!Application.isEditor){
+	        	
+		        DetectionManagerReady();
+	        
+	        }
+	        
         }
 
         public void markerInfos(string infos){
