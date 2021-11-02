@@ -35,7 +35,7 @@ Our goal is to distribute the code for free and create a good community that sup
 <p>
 <b>Currently, we can't spend as much time as we would on the project. We're developing it as a side project on free time. We intend to increase our efforts if we see that the library gets positive feedbacks, and the community is interested.</b>
 
-The best thing you can do to support us is testing our library, <b>contributing in the development via pull requests</b> and letting us know, via socials, email, or Discord, your use case and what you think about it.
+The best thing you can do to support us is testing our library, <b>contributing in the development via pull requests</b> and letting us know via socials your use case and what you think about it.
 </p>
 
 ## 🚀 How to contribute 
@@ -46,7 +46,6 @@ If you want you can take part in this by:
 
 - proposing an upgrade through a pull request
 - using the issue section to report a problem or a proposal
-- being active and participating in the discussion on the discord channel dedicated to ARWT
 
 
 ## 📖 Wiki 
